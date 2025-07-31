@@ -153,6 +153,36 @@ MODIFY COLUMN `Discount` DOUBLE AFTER `Quantity`,
 MODIFY COLUMN `Sales` DOUBLE AFTER `Discount`,
 MODIFY COLUMN `Profit` DOUBLE AFTER `Sales`;
 
+-- Check for NULL values in each column, to avoid crashing divide the query to two
+SELECT * 
+FROM superstore_stage
+WHERE `Order ID` IS NULL
+OR `Order Date` IS NULL
+OR `Ship Date` IS NULL
+OR `Ship Mode` IS NULL
+OR `Customer ID` IS NULL
+OR `Customer Name` IS NULL
+OR `Segment` IS NULL
+OR `Country` IS NULL
+OR `City` IS NULL
+OR `State` IS NULL;
+
+SELECT * 
+FROM superstore_stage
+WHERE `Postal Code` IS NULL
+OR `Region` IS NULL
+OR `Product ID` IS NULL
+OR `Category` IS NULL
+OR `Sub-Category` IS NULL
+OR `Product Name` IS NULL
+OR `Unit Cost` IS NULL
+OR `Unit Price` IS NULL
+OR `Quantity` IS NULL
+OR `Discount` IS NULL
+OR `Sales` IS NULL
+OR `Profit` IS NULL;
+-- No NULL values found
+
 -- Final
 SELECT * FROM superstore_stage
 ORDER BY `Row ID`;
