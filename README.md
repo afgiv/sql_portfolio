@@ -9,7 +9,7 @@ Dataset: Global Superstore sales (2014–2017)
 Focus: Data Cleaning & Exploratory Data Analysis (EDA)
 Highlights:
 Cleaned and standardized data (dates, duplicates, calculated Unit Price & Unit Cost)
-Sales, profit, and margin analysis by category, product, and customer segments
+Sales, profit, yearly trend, and margin analysis by category, product, and customer segments
 Identified loss-making products & tested business scenarios (discount reduction, price increase)
 
 2. 🌍 Global Layoffs
