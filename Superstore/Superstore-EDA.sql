@@ -48,6 +48,35 @@ SELECT ROUND(SUM(Sales), 2) as total_sales, ROUND(SUM(Profit), 2) AS total_profi
 FROM superstore_stage;
 -- From a span of 4 years, total Sales generated was 2,175,857.71 and Total Profit generated 270,124.75 having a 12.41% profit margin
 
+-- On a yearly trend, what are the sales and profit?
+WITH base AS (
+SELECT YEAR(`Order Date`) AS year_date, ROUND(SUM(Sales), 2) AS total_sales, ROUND(SUM(Profit), 2) AS total_profit
+FROM superstore_stage
+GROUP BY year_date
+ORDER BY year_date DESC
+)
+SELECT year_date, total_sales,
+CASE 
+WHEN LAG(total_sales) OVER (ORDER BY year_date) IS NULL THEN NULL
+ELSE ROUND(total_sales - LAG(total_sales) OVER (ORDER BY year_date), 2)
+END AS sales_diff,
+CASE 
+WHEN LAG(total_sales) OVER (ORDER BY year_date) IS NULL THEN NULL
+ELSE ROUND(((total_sales - LAG(total_sales) OVER (ORDER BY year_date)) / LAG(total_sales) OVER (ORDER BY year_date)) * 100, 2)
+END AS sales_diff_pct,
+total_profit,
+CASE
+WHEN LAG(total_profit) OVER (ORDER BY year_date) IS NULL THEN NULL
+ELSE ROUND(total_profit - LAG(total_profit) OVER (ORDER BY year_date), 2)
+END AS profit_diff,
+CASE
+WHEN LAG(total_profit) OVER (ORDER BY year_date) IS NULL THEN NULL
+ELSE ROUND(((total_profit - LAG(total_profit) OVER (ORDER BY year_date)) / LAG(total_profit) OVER (ORDER BY year_date)) * 100, 2)
+END AS profit_diff_pct
+FROM base
+ORDER BY year_date;
+-- Sales dipped -4% in 2015 but rebounded strongly with +29% in 2016 and +21% in 2017, while profit grew steadily each year.
+
 -- Which category of products is the most common? But which of them generated more sales and profit?
 SELECT Category, COUNT(Category) AS Cat_count, ROUND(SUM(Sales), 2) AS total_sales, ROUND(SUM(Profit), 2) AS total_profit
 FROM superstore_stage
