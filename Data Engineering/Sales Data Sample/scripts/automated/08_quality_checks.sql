@@ -32,7 +32,7 @@ SELECT COUNT(*)
 FROM fact_sales;
 
 -- 2. Check foreign key integrity against dimension tables
-SELECT COUNT (*)
+SELECT CASE WHEN COUNT(*) = 0 THEN 'PASS' ELSE 'FAIL' END AS check_status
 FROM fact_sales AS f
 LEFT JOIN dim_customer AS c
 	ON f.customer_id = c.customer_id
@@ -68,3 +68,40 @@ SELECT profit
 FROM fact_sales
 WHERE profit != sales - (cost * quantity);
 
+-- 5. Validation of data ranges
+SELECT cost, quantity, price, sales, profit
+FROM fact_sales
+WHERE cost < 0 OR quantity < 0 OR price < 0 OR profit < 0;
+
+-- 6. NULL check on key fields
+SELECT order_number, order_line_num, product_code, customer_id, order_date
+FROM fact_sales
+WHERE order_number IS NULL
+	OR order_line_num IS NULL
+	OR product_code IS NULL
+	OR order_date IS NULL;
+
+-- 7. Aggregate functions comparison
+SELECT d.year_id, SUM(f.profit) AS total_profit
+FROM fact_sales AS f
+JOIN dim_date AS d
+	ON f.order_date = d.order_date
+GROUP BY d.year_id
+ORDER BY d.year_id DESC;
+
+SELECT year_id, SUM(sales - (ROUND(price * 0.7, 2) * quantity)) AS total_profit
+FROM staging_sales
+GROUP BY year_id
+ORDER BY year_id DESC;
+
+SELECT c.company_name, SUM(f.sales) AS total_sales
+FROM fact_sales AS f
+JOIN dim_customer AS c
+	ON f.customer_id = c.customer_id
+GROUP BY c.company_name
+ORDER BY total_sales DESC;
+
+SELECT company_name, SUM(sales) AS total_sales
+FROM staging_sales
+GROUP BY company_name
+ORDER BY total_sales DESC;
