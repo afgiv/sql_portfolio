@@ -28,8 +28,8 @@
 -- 1. Transaction-level enriched view
 CREATE OR REPLACE VIEW vw_sales_detail AS
 SELECT o.order_number, f.order_line_num, f.quantity, f.cost, f.price, f.sales, f.profit,
-d.order_date, d.year_id, p.product_line, p.msrp, c.company_name, c.customer_firstname,
-c.customer_lastname, g.city, g.state, g.country, g.territory, o.deal_size, f.status
+d.year_id, p.product_line, p.msrp, c.company_name, c.customer_firstname,c.customer_lastname,
+g.city, g.state, g.country, g.territory, o.deal_size, f.status
 FROM fact_sales AS f
 JOIN dim_date AS d
 	ON f.order_date = d.order_date

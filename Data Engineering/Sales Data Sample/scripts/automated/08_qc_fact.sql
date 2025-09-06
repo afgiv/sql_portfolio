@@ -25,11 +25,10 @@
 */
 
 -- 1. Row count via staging_sales vs fact_sales
-SELECT COUNT(*)
-FROM staging_sales;
-
-SELECT COUNT(*)
-FROM fact_sales;
+SELECT
+	(SELECT COUNT(*) FROM staging_sales) AS staging_count,
+	(SELECT COUNT(*) FROM fact_sales) AS fact_count,
+	(SELECT COUNT(*) FROM staging_sales) - (SELECT COUNT(*) FROM fact_sales) AS diff_count;
 
 -- 2. Check foreign key integrity against dimension tables
 SELECT CASE WHEN COUNT(*) = 0 THEN 'PASS' ELSE 'FAIL' END AS check_status
