@@ -1,6 +1,6 @@
 /*
 ===========================================================
- File:        02_dims.sql
+ File:        create_dims.sql
  Purpose:     Create dimension tables for the Star Schema
  Author:      Amadeo F. Genio IV
  Description: 
@@ -15,7 +15,8 @@
    - Run this script after initializing the database.
    - These tables will store descriptive attributes to support fact table analysis.
    - Primary keys are defined for each dimension table.
-   - Constraint to the dim_geography added to preserve uniqueness to all the columns.
+   - CONSTRAINT UNIQUE are added to both dim_customer and dim_geography to handle duplication
+     for future inserts.
 ===========================================================
 */
 
@@ -48,7 +49,8 @@ CREATE TABLE IF NOT EXISTS dim_customer (
 	address_1 VARCHAR (255),
 	address_2 VARCHAR (255),
 	geo_id INTEGER,
-	CONSTRAINT fk_geo FOREIGN KEY (geo_id) REFERENCES dim_geography (geo_id)
+	CONSTRAINT fk_geo FOREIGN KEY (geo_id) REFERENCES dim_geography (geo_id),
+	CONSTRAINT dim_cust_uq UNIQUE (company_name, customer_firstname, customer_lastname)
 );
 
 -- 4. Products Dimension Table

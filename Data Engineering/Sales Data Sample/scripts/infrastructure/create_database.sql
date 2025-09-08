@@ -1,6 +1,6 @@
 /*
 ===========================================================
- File:        01_database.sql
+ File:        create_database.sql
  Purpose:     Initialize the project database.
  Author:      Amadeo F. Genio IV
  Description: 

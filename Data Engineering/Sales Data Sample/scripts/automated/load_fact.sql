@@ -1,6 +1,6 @@
 /*
 ===========================================================
- File:        07_create_fact_sales.sql
+ File:        load_fact.sql
  Purpose:     Define and create the fact_sales table
  Author:      Amadeo F. Genio IV
  Description:
@@ -17,14 +17,14 @@
    - sales (numeric measure of gross revenue)
    - quantity (units sold)
    - cost (derived measure, estimated using an assumed 
-     price-to-cost ratio margin due to missing cost data)
+     price markup % due to missing cost data)
    - profit (sales - cost, based on the derived cost measure)
  Foreign Keys:
-   - date_id → dim_date
+   - order_date → dim_date
    - geo_id → dim_geography
    - customer_id → dim_customer
-   - product_id → dim_product
-   - order_id → dim_order
+   - product_code → dim_product
+   - order_number → dim_order
  Notes:
    - Uses surrogate keys, not natural keys, for joins.
    - Designed for repeatable, idempotent ETL loads.

@@ -32,7 +32,7 @@ WHERE order_number IS NULL OR quantity IS NULL OR price IS NULL OR order_line_nu
 status IS NULL OR qtr_id IS NULL OR month_id IS NULL OR year_id IS NULL OR product_line IS NULL OR msrp IS NULL OR
 product_code IS NULL OR company_name IS NULL OR phone IS NULL OR address_1 IS NULL OR city IS NULL
 OR country IS NULL OR territory IS NULL OR customer_firstname IS NULL OR customer_lastname IS NULL OR deal_size IS NULL;
--- No NULL values for these columns meaning only the state column have NULLs
+-- No NULL values for these columns meaning only the state column and address_2 have NULLs
 
 -- Check for Duplicates
 SELECT order_number, quantity, price, order_line_num, order_date, status, qtr_id, month_id, year_id, product_line, msrp,

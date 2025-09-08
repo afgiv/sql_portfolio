@@ -1,6 +1,6 @@
 /*
 ===========================================================
- File:        06_load_dims.sql
+ File:        load_dims.sql
  Purpose:     Populate dimension tables from staging data
  Author:      Amadeo F. Genio IV
  Description:
@@ -8,8 +8,8 @@
    - Standardizes and enriches attributes for dimension tables.
    - Ensures referential integrity for fact table loading.
    - Uses surrogate keys for primary identifiers.
-   - Applies a unique index on dim_geography (with COALESCE on
-     nullable columns) to prevent duplicates.
+   - Applies a unique constraint on dim_geography and
+     dim_customer to prevent duplicates.
    - Utilizes ON CONFLICT ON CONSTRAINT DO NOTHING for dim_geography
      and dim_customer loads to handle natural key collisions gracefully.
  Dimensions Loaded:

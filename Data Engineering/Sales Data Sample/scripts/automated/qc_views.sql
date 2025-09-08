@@ -1,6 +1,6 @@
 /*
 ===========================================================
- File:        09_qc_views.sql
+ File:        qc_views.sql
  Purpose:     Data quality checks for semantic views
  Author:      Amadeo F. Genio IV
  Description:
@@ -12,7 +12,6 @@
    - Row count consistency between vw_sales_detail and fact_sales.
    - Aggregate totals in views (year, company, product, country,
      territory, deal size) match corresponding fact_sales sums.
-   - No duplicate rows in aggregated views.
    - Top-N validation of companies to ensure ranking 
      logic is correct.
  Notes:

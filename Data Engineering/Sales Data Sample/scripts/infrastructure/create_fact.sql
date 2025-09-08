@@ -1,6 +1,6 @@
 /*
 ===========================================================
- File:        03_fact.sql
+ File:        create_fact.sql
  Purpose:     Create the fact table for the sales_db schema
  Author:      Amadeo F. Genio IV
  Description: 

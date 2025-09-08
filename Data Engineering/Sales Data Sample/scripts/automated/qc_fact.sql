@@ -1,6 +1,6 @@
 /*
 ===========================================================
- File:        08_quality_checks.sql
+ File:        qc_fact.sql
  Purpose:     Validate integrity and consistency of fact_sales
  Author:      Amadeo F. Genio IV
  Description:

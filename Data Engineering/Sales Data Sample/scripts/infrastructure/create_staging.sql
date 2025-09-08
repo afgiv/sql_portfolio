@@ -1,13 +1,14 @@
 /*
 ===========================================================
- File:        03_staging_load.sql
- Purpose:     Create staging table and load raw CSV data
+ File:        create_staging.sql
+ Purpose:     Create staging table for the raw CSV data
  Author:      Amadeo F. Genio IV
  Description:
    - Creates the staging table for raw sales data.
-   - Loads data from CSV into the staging table.
    - Staging table serves as the source for subsequent
      dimension and fact table loads.
+  Note:
+   - Run this script after initializing the database.
 ===========================================================
 */
 
