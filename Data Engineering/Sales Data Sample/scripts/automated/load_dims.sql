@@ -8,34 +8,28 @@
    - Standardizes and enriches attributes for dimension tables.
    - Ensures referential integrity for fact table loading.
    - Uses surrogate keys for primary identifiers.
-   - Applies a unique constraint on dim_geography and
-     dim_customer to prevent duplicates.
-   - Utilizes ON CONFLICT ON CONSTRAINT DO NOTHING for dim_geography
-     and dim_customer loads to handle natural key collisions gracefully.
+   - Utilizes ON CONFLICT ON CONSTRAINT DO NOTHING for all dims
+     loads to handle duplications for future inserts.
  Dimensions Loaded:
    - dim_date
    - dim_geography
    - dim_customer
    - dim_product
-   - dim_order
+   - dim_deal_size
+   - dim_status
  Notes:
-   - Run only after staging_sales has been cleaned.
-   - Dimension tables are initially loaded without unique constraints
-     to avoid ETL conflicts.
+   - Run only after staging_sales has been cleaned and tables for dims
+     are created.
    - After data profiling, appropriate unique constraints are added.
-   - The `ON CONFLICT ON CONSTRAINT` clause is then applied in
-     subsequent loads to ensure no duplicate rows are inserted while
-     preserving referential integrity.
-   - Designed to be repeatable and idempotent if TRUNCATE is
-     applied before load.
 ===========================================================
 */
 
 -- 1. Load the dim_date table
+-- date_id is SERIAL, auto-generated
 INSERT INTO dim_date (order_date, qtr_id, month_id, year_id)
 SELECT DISTINCT order_date, qtr_id, month_id, year_id
 FROM staging_sales
-ON CONFLICT (order_date) DO NOTHING;
+ON CONFLICT ON CONSTRAINT dim_date_uq DO NOTHING;
 
 -- 2. Load the dim_geography table
 -- geo_id is SERIAL, auto-generated
@@ -60,13 +54,22 @@ LEFT JOIN dim_geography AS g
 ON CONFLICT ON CONSTRAINT dim_cust_uq DO NOTHING;
 
 -- 4.Load the dim_product table
+-- product_id is SERIAL, auto-generated
 INSERT INTO dim_product (product_code, product_line, msrp)
 SELECT DISTINCT product_code, product_line, msrp
 FROM staging_sales
-ON CONFLICT (product_code) DO NOTHING;
+ON CONFLICT ON CONSTRAINT dim_prod_uq DO NOTHING;
 
--- 5. Load the dim_order table
-INSERT INTO dim_order (order_number, deal_size)
-SELECT DISTINCT order_number, deal_size
+-- 5. Load the dim_deal_size table
+-- size_id is SERIAL, auto-generated
+INSERT INTO dim_deal_size (deal_size)
+SELECT DISTINCT deal_size
 FROM staging_sales
-ON CONFLICT (order_number) DO NOTHING;
+ON CONFLICT ON CONSTRAINT dim_deal_uq DO NOTHING;
+
+-- 6. Load the dim_status table
+-- status_id is SERIAL, auto-generated
+INSERT INTO dim_status (status)
+SELECT DISTINCT status
+FROM staging_sales
+ON CONFLICT ON CONSTRAINT dim_status_uq DO NOTHING;

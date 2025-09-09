@@ -19,6 +19,7 @@
    - Designed for analyst and engineer validation before BI 
      consumption.
    - Extendable: new views should include parallel checks here.
+   - Again, current views are set for status with Shipped.
 ===========================================================
 */
 
@@ -34,7 +35,10 @@ SELECT
 SELECT SUM(f.sales) AS total_sales, SUM(f.profit) AS total_profit
 FROM fact_sales AS f
 JOIN dim_date AS d
-	ON f.order_date = d.order_date
+	ON f.date_id = d.date_id
+JOIN dim_status AS st
+	ON f.status_id = st.status_id
+WHERE st.status = 'Shipped'
 GROUP BY d.year_id
 ORDER BY d.year_id DESC;
 
@@ -46,18 +50,24 @@ SELECT SUM(f.sales) AS total_sales, SUM(f.profit) AS total_profit
 FROM fact_sales AS f
 JOIN dim_customer AS c
 	ON f.customer_id = c.customer_id
+JOIN dim_status AS st
+	ON f.status_id = st.status_id
+WHERE st.status = 'Shipped'
 GROUP BY c.company_name
 ORDER BY total_sales DESC, total_profit DESC
 LIMIT 10;
 
 SELECT total_sales, total_profit
-FROM vw_sales_company;
+FROM vw_sales_top10company;
 
 -- Product Line view
 SELECT SUM(f.sales) AS total_sales, SUM(f.profit) AS total_profit
 FROM fact_sales AS f
 JOIN dim_product AS p
-	ON f.product_code = p.product_code
+	ON f.product_id = p.product_id
+JOIN dim_status AS st
+	ON f.status_id = st.status_id
+WHERE st.status = 'Shipped'
 GROUP BY p.product_line
 ORDER BY total_sales DESC, total_profit DESC;
 
@@ -71,6 +81,9 @@ JOIN dim_customer AS c
 	ON f.customer_id = c.customer_id
 JOIN dim_geography AS g
 	ON c.geo_id = g.geo_id
+JOIN dim_status AS st
+	ON f.status_id = st.status_id
+WHERE st.status = 'Shipped'
 GROUP BY g.country
 ORDER BY total_sales DESC, total_profit DESC;
 
@@ -84,6 +97,9 @@ JOIN dim_customer AS c
 	ON f.customer_id = c.customer_id
 JOIN dim_geography AS g
 	ON c.geo_id = g.geo_id
+JOIN dim_status AS st
+	ON f.status_id = st.status_id
+WHERE st.status = 'Shipped'
 GROUP BY g.territory
 ORDER BY total_sales DESC, total_profit DESC;
 
@@ -93,9 +109,12 @@ FROM vw_sales_territory;
 -- Deal size
 SELECT SUM(f.sales) AS total_sales, SUM(f.profit) AS total_profit
 FROM fact_sales AS f
-JOIN dim_order AS o
-	ON f.order_number = o.order_number
-GROUP BY o.deal_size
+JOIN dim_deal_size AS ds
+	ON f.size_id = ds.size_id
+JOIN dim_status AS st
+	ON f.status_id = st.status_id
+WHERE st.status = 'Shipped'
+GROUP BY ds.deal_size
 ORDER BY total_sales DESC, total_profit DESC;
 
 SELECT total_sales, total_profit

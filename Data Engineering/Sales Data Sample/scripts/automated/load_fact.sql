@@ -20,11 +20,12 @@
      price markup % due to missing cost data)
    - profit (sales - cost, based on the derived cost measure)
  Foreign Keys:
-   - order_date → dim_date
+   - date_id → dim_date
    - geo_id → dim_geography
    - customer_id → dim_customer
-   - product_code → dim_product
-   - order_number → dim_order
+   - product_id → dim_product
+   - size_id → dim_deal_size
+   - status_id → dim_status
  Notes:
    - Uses surrogate keys, not natural keys, for joins.
    - Designed for repeatable, idempotent ETL loads.
@@ -39,19 +40,21 @@
 */
 
 INSERT INTO fact_sales (order_number, order_line_num, quantity, cost, price, sales, profit,
-product_code, customer_id, order_date, status)
-SELECT o.order_number, s.order_line_num, s.quantity, ROUND(s.price * 0.7, 2) AS cost, s.price,
-s.sales, ROUND(s.sales - (ROUND(s.price * 0.7, 2) * quantity), 2) AS profit, p.product_code,
-c.customer_id, d.order_date, s.status
+product_id, customer_id, date_id, size_id, status_id)
+SELECT s.order_number, s.order_line_num, s.quantity, ROUND(s.price * 0.7, 2) AS cost, s.price,
+s.sales, ROUND(s.sales - (ROUND(s.price * 0.7, 2) * quantity), 2) AS profit, p.product_id,
+c.customer_id, d.date_id, ds.size_id, st.status_id
 FROM staging_sales AS s
-JOIN dim_order AS o
-	ON s.order_number = o.order_number
-JOIN dim_product AS p
+LEFT JOIN dim_product AS p
 	ON s.product_code = p.product_code
 LEFT JOIN dim_customer AS c
 	ON s.company_name = c.company_name
 	AND s.customer_firstname = c.customer_firstname
 	AND s.customer_lastname = c.customer_lastname
-JOIN dim_date AS d
+LEFT JOIN dim_date AS d
 	ON s.order_date = d.order_date
-ORDER BY o.order_number;
+LEFT JOIN dim_deal_size AS ds
+	ON s.deal_size = ds.deal_size
+LEFT JOIN dim_status AS st
+	ON s.status = st.status
+ORDER BY s.order_number;

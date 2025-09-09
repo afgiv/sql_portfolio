@@ -149,3 +149,19 @@ FROM staging_sales;
 
 -- Result: No unique combinations found to match total rows
 -- Action: dim_product to have surrogate serial key as primary key
+
+-- dim_deal_size
+SELECT COUNT(*) AS total_rows, COUNT(DISTINCT deal_size)
+FROM staging_sales;
+-- 2823 vs 3
+
+--Result: No unique combinations found to match total rows
+--Action: dim_deal_size to have surrogate serial key as primary key
+
+-- dim_status
+SELECT COUNT(*) AS total_rows, COUNT(DISTINCT status)
+FROM staging_sales;
+-- 2823 vs 6
+
+--Result: No unique combinations found to match total rows
+--Action: dim_status to have surrogate serial key as primary key

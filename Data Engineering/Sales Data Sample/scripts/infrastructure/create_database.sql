@@ -7,9 +7,12 @@
    - Drops the database if it already exists
    - Creates a fresh database for the project
  Notes:
-   - Run this file before any other SQL scripts.
-   - This ensures a clean environment every time.
-=======
+  - Cannot be executed as a script.
+  - Run on Git Bash: psql -d postgres -f "full/path/to/create_database.sql"
+  - Must be executed against an existing DB (like 'postgres'),
+     not inside the target DB itself.
+  - Queries can be executed separately.
+============================================================
 */
 
 -- Drop the database if it already exists

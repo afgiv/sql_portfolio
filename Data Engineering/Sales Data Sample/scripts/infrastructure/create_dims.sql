@@ -10,22 +10,26 @@
        * dim_geography
        * dim_customer
        * dim_product
-	   * dim_order
+	   * dim_deal_size
+	   * dim_status
  Notes:
-   - Run this script after initializing the database.
+   - Run this script after transformation of the staging table and data profiling
+     is set.
    - These tables will store descriptive attributes to support fact table analysis.
    - Primary keys are defined for each dimension table.
-   - CONSTRAINT UNIQUE are added to both dim_customer and dim_geography to handle duplication
-     for future inserts.
+   - CONSTRAINT UNIQUE are added to the dims to handle duplications for future
+   	 inserts.
 ===========================================================
 */
 
 -- 1. Date Dimension Table
 CREATE TABLE IF NOT EXISTS dim_date (
-	order_date DATE PRIMARY KEY,
+	date_id SERIAL PRIMARY KEY,
+	order_date DATE,
 	qtr_id INTEGER NOT NULL,
 	month_id INTEGER NOT NULL,
-	year_id INTEGER NOT NULL
+	year_id INTEGER NOT NULL,
+	CONSTRAINT dim_date_uq UNIQUE (order_date)
 );
 
 -- 2. Geography Dimension Table
@@ -55,13 +59,23 @@ CREATE TABLE IF NOT EXISTS dim_customer (
 
 -- 4. Products Dimension Table
 CREATE TABLE IF NOT EXISTS dim_product (
-	product_code VARCHAR(255) PRIMARY KEY,
+	product_id SERIAL PRIMARY KEY,
+	product_code VARCHAR(255) NOT NULL,
 	product_line VARCHAR (255) NOT NULL,
-	msrp INTEGER NOT NULL
+	msrp INTEGER NOT NULL,
+	CONSTRAINT dim_prod_uq UNIQUE (product_code)
 );
 
--- 5.Orders Dimension Table
-CREATE TABLE IF NOT EXISTS dim_order (
-	order_number INTEGER PRIMARY KEY,
-	deal_size VARCHAR (255) NOT NULL
+-- 5. Deal size Dimension Table
+CREATE TABLE IF NOT EXISTS dim_deal_size(
+	size_id SERIAL PRIMARY KEY,
+	deal_size VARCHAR (255) NOT NULL,
+	CONSTRAINT dim_deal_uq UNIQUE (deal_size)
 );
+
+-- 6. Status Dimension Table
+CREATE TABLE IF NOT EXISTS dim_status (
+	status_id SERIAL PRIMARY KEY,
+	status VARCHAR (255) NOT NULL,
+	CONSTRAINT dim_status_uq UNIQUE (status)
+)

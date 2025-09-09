@@ -35,16 +35,13 @@ SELECT CASE WHEN COUNT(*) = 0 THEN 'PASS' ELSE 'FAIL' END AS check_status
 FROM fact_sales AS f
 LEFT JOIN dim_customer AS c
 	ON f.customer_id = c.customer_id
-LEFT JOIN dim_order AS o
-	ON f.order_number = o.order_number
 LEFT JOIN dim_product AS p
-	ON f.product_code = p.product_code
+	ON f.product_id = p.product_id
 LEFT JOIN dim_date AS d
-	ON f.order_date = d.order_date
+	ON f.date_id = d.date_id
 WHERE c.customer_id IS NULL
-	OR o.order_number IS NULL
-	OR p.product_code IS NULL
-	OR d.order_date IS NULL;
+	OR p.product_id IS NULL
+	OR d.date_id IS NULL;
 
 SELECT *
 FROM dim_customer AS c
@@ -73,18 +70,19 @@ FROM fact_sales
 WHERE cost < 0 OR quantity < 0 OR price < 0 OR profit < 0;
 
 -- 6. NULL check on key fields
-SELECT order_number, order_line_num, product_code, customer_id, order_date
+SELECT order_number, order_line_num, product_id, customer_id, date_id
 FROM fact_sales
 WHERE order_number IS NULL
 	OR order_line_num IS NULL
-	OR product_code IS NULL
-	OR order_date IS NULL;
+	OR customer_id IS NULL
+	OR product_id IS NULL
+	OR date_id IS NULL;
 
 -- 7. Aggregate functions comparison
 SELECT d.year_id, SUM(f.profit) AS total_profit
 FROM fact_sales AS f
 JOIN dim_date AS d
-	ON f.order_date = d.order_date
+	ON f.date_id = d.date_id
 GROUP BY d.year_id
 ORDER BY d.year_id DESC;
 
@@ -104,3 +102,39 @@ SELECT company_name, SUM(sales) AS total_sales
 FROM staging_sales
 GROUP BY company_name
 ORDER BY total_sales DESC;
+
+SELECT p.product_line, SUM(f.sales) AS total_sales
+FROM fact_sales AS f
+JOIN dim_product AS p
+	ON f.product_id = p.product_id
+GROUP BY p.product_line
+ORDER BY total_sales DESC;
+
+SELECT product_line, SUM(sales) AS total_sales
+FROM staging_sales
+GROUP BY product_line
+ORDER BY total_sales DESC;
+
+SELECT ds.deal_size, SUM(f.sales) AS total_sales
+FROM fact_sales AS f
+JOIN dim_deal_size AS ds
+	ON f.size_id = ds.size_id
+GROUP BY ds.deal_size
+ORDER BY total_sales DESC;
+
+SELECT deal_size, SUM(sales) AS total_sales
+FROM staging_sales
+GROUP BY deal_size
+ORDER BY total_sales DESC;
+
+SELECT st.status, SUM(sales) AS total_sales
+FROM fact_sales AS f
+JOIN dim_status AS st
+	ON f.status_id = st.status_id
+GROUP BY st.status
+HAVING st.status = 'Shipped';
+
+SELECT status, SUM(sales) AS total_sales
+FROM staging_sales
+GROUP BY status
+HAVING status = 'Shipped';
