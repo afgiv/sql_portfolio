@@ -6,40 +6,60 @@ This Makefile automates the setup and refresh of the Sales Data Sample ETL pipel
 
 It covers:
 
-Infrastructure (database, dimensions, fact, staging)
+Infrastructure: database, dimensions, fact, staging tables
 
-Automated ETL (load staging → cleaning → dims → fact → views → quality checks)
+Automated ETL: load staging → cleaning → dims → fact → views → quality checks
 
-Designed for repeatable and idempotent execution — so you can easily reset or refresh the pipeline.
+The design ensures repeatable and idempotent execution — making it easy to reset or refresh the pipeline anytime.
 
 ⚙️ Prerequisites
 
-PostgreSQL installed and psql available in PATH
+PostgreSQL installed, with psql available in PATH
 
 Python 3 installed (for loading staging data)
 
-.env file configured with database details
+Use python3 on Linux/Mac
+
+Use python on Windows
+
+GNU Make installed
+
+On Windows, run commands from Git Bash (ships with Git)
+
+A configured .env file (see below)
 
 📝 Environment Variables
 
-An .env.example file is provided. Run this command on Git Bash:
+An .env.example file is provided.
+
+Create your own .env file by running in Git Bash:
 
 cp .env.example .env
 
-Open the .env file with text editor and update with your values.
 
-🔒 Note: The database password is not stored in .env. You will be prompted when running commands.
+Then edit .env with your database details:
 
-🚀 Commands (Git Bash)
+DB_USER=your_username
+
+DB_NAME=sales_db
+
+
+🔒 Note: The database password is not stored in .env. You will be prompted at runtime.
+
+🚀 Commands
+
+🔒 Always run commands from the root folder in Git Bash.
+
 1. Infrastructure Setup (run once)
 
-Creates database and schema objects.
+Creates the database and schema objects.
 
 make infra
 
+
 Equivalent to running:
 
-make create_database → Drops & recreates the database
+make create_database → ⚠️ Drops & recreates the database
 
 make create_dims → Creates dimension tables
 
@@ -49,29 +69,30 @@ make create_staging → Creates staging table
 
 2. Automated ETL Pipeline (run repeatedly)
 
-Runs the full transformation pipeline:
+Runs the full ETL pipeline end-to-end.
 
 make automated
+
 
 Steps executed:
 
 make load_staging → Load raw data into the staging table
 
-make cleaning → Cleans staging data
+make cleaning → Clean staging data
 
-make dims → Loads dimension tables
+make dims → Load dimension tables
 
-make fact → Loads fact table
+make fact → Load fact table
 
-make qc_fact → Runs fact-level data quality checks
+make qc_fact → Run fact-level data quality checks
 
-make views → Creates semantic/reporting views
+make views → Create semantic/reporting views
 
-make qc_views → Runs view-level data quality checks
+make qc_views → Run view-level data quality checks
 
 3. Run Individual Targets
 
-You can also run steps individually:
+Each step can also be run independently:
 
 make cleaning
 make dims
@@ -85,8 +106,4 @@ To rebuild from scratch:
 make create_database
 make infra
 
-
-✅ With this setup, contributors can reproduce your pipeline simply by configuring their .env and running:
-
-make infra
-make automated
+⚠️ This will DROP and recreate the database.

@@ -5,7 +5,8 @@
 # Description:
 #   - Provides reproducible commands for setting up the
 #     database schema (infrastructure) and running the ETL
-#     automation (staging → dims → fact → views → quality checks).
+#     automation
+#     (staging → cleaning → dims → fact → views → quality checks).
 #   - Uses environment variables from `.env` for DB_USER and
 #     DB_NAME. Password is not stored; users will be prompted.
 #   - Designed to simplify execution for both first-time setup
@@ -21,7 +22,8 @@
 #
 #   Automation (run repeatedly):
 #     - automated      Run full ETL pipeline
-#                      (cleaning → dims → fact → views → QC)
+#                      (staging → cleaning → dims → fact → views → QC)
+#     - staging        Load the raw data to the staging table
 #     - cleaning       Data cleaning of the raw staging table
 #     - dims           Populate dim tables
 #     - fact           Populate fact tables
@@ -55,17 +57,18 @@ PSQL = psql -U $(DB_USER) -d $(DB_NAME)
 
 infra: create_database create_dims create_fact create_staging
 
+# create_database is a DROP-CREATE for refresh so it needs to connect to other database to work
 create_database:
-    $(PSQL) -f scripts/infrastructure/01_database.sql
+    psql -U $(DB_USER) -d postgres -f scripts/infrastructure/create_database.sql
 
 create_dims:
-    $(PSQL) -f scripts/infrastructure/02_dims.sql
+    $(PSQL) -f scripts/infrastructure/create_dims.sql
 
 create_fact:
-    $(PSQL) -f scripts/infrastructure/03_fact.sql
+    $(PSQL) -f scripts/infrastructure/create_fact.sql
 
 create_staging:
-    $(PSQL) -f scripts/infrastructure/04_staging.sql
+    $(PSQL) -f scripts/infrastructure/create_staging.sql
 
 # ------------------------------------------------------------
 # Automated targets
@@ -74,22 +77,22 @@ create_staging:
 automated: load_staging cleaning dims fact qc_fact views qc_views
 
 load_staging:
-    python load_staging.py
+    python scripts/automated/load_staging.py
 
 cleaning:
-    $(PSQL) -f scripts/automated/05_data_cleaning.sql
+    $(PSQL) -f scripts/support/data_cleaning.sql
 
 dims:
-    $(PSQL) -f scripts/automated/06_load_dims.sql
+    $(PSQL) -f scripts/automated/load_dims.sql
 
 fact:
-    $(PSQL) -f scripts/automated/07_load_fact.sql
+    $(PSQL) -f scripts/automated/load_fact.sql
 
 qc_fact:
-    $(PSQL) -f scripts/automated/08_qc_fact.sql
+    $(PSQL) -f scripts/automated/qc_fact.sql
 
 views:
-    $(PSQL) -f scripts/automated/09_views.sql
+    $(PSQL) -f scripts/automated/views.sql
 
 qc_views:
-    $(PSQL) -f scripts/automated/10_qc_views.sql
+    $(PSQL) -f scripts/automated/qc_views.sql
