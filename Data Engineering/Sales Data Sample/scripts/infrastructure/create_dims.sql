@@ -78,4 +78,4 @@ CREATE TABLE IF NOT EXISTS dim_status (
 	status_id SERIAL PRIMARY KEY,
 	status VARCHAR (255) NOT NULL,
 	CONSTRAINT dim_status_uq UNIQUE (status)
-)
+);
