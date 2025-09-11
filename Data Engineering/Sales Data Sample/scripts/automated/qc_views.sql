@@ -122,4 +122,4 @@ FROM vw_sales_deal_size;
 
 -- 3. Top 10 Count validation for vw_sales_company
 SELECT COUNT(*)
-FROM vw_sales_company;
+FROM vw_sales_top10company;

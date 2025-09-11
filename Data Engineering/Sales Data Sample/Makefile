@@ -59,16 +59,16 @@ infra: create_database create_dims create_fact create_staging
 
 # create_database is a DROP-CREATE for refresh so it needs to connect to other database to work
 create_database:
-    psql -U $(DB_USER) -d postgres -f scripts/infrastructure/create_database.sql
+	psql -U $(DB_USER) -d postgres -f scripts/infrastructure/create_database.sql
 
 create_dims:
-    $(PSQL) -f scripts/infrastructure/create_dims.sql
+	$(PSQL) -f scripts/infrastructure/create_dims.sql
 
 create_fact:
-    $(PSQL) -f scripts/infrastructure/create_fact.sql
+	$(PSQL) -f scripts/infrastructure/create_fact.sql
 
 create_staging:
-    $(PSQL) -f scripts/infrastructure/create_staging.sql
+	$(PSQL) -f scripts/infrastructure/create_staging.sql
 
 # ------------------------------------------------------------
 # Automated targets
@@ -77,22 +77,22 @@ create_staging:
 automated: load_staging cleaning dims fact qc_fact views qc_views
 
 load_staging:
-    python scripts/automated/load_staging.py
+	python scripts/automated/load_staging.py
 
 cleaning:
-    $(PSQL) -f scripts/support/data_cleaning.sql
+	$(PSQL) -q -P pager=off -f scripts/support/data_cleaning.sql
 
 dims:
-    $(PSQL) -f scripts/automated/load_dims.sql
+	$(PSQL) -q -P pager=off -f scripts/automated/load_dims.sql
 
 fact:
-    $(PSQL) -f scripts/automated/load_fact.sql
+	$(PSQL) -q -P pager=off -f scripts/automated/load_fact.sql
 
 qc_fact:
-    $(PSQL) -f scripts/automated/qc_fact.sql
+	$(PSQL) -q -P pager=off -f scripts/automated/qc_fact.sql
 
 views:
-    $(PSQL) -f scripts/automated/views.sql
+	$(PSQL) -q -P pager=off -f scripts/automated/views.sql
 
 qc_views:
-    $(PSQL) -f scripts/automated/qc_views.sql
+	$(PSQL) -q -P pager=off -f scripts/automated/qc_views.sql
