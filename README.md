@@ -1,10 +1,27 @@
 SQL Portfolio
 
-Welcome to my SQL Portfolio! 🚀
-This repository showcases SQL projects where I clean, transform, and analyze datasets to uncover insights. Each folder contains SQL scripts highlighting different aspects of data analysis.
+Welcome to my SQL & Data Engineering Portfolio! 🚀
+This repository showcases projects where I clean, transform, and analyze datasets, as well as build data engineering pipelines to automate database workflows.
+Each folder contains SQL scripts or automation pipelines highlighting different aspects of data analysis and engineering.
+
+🛠 Tech Stack
+
+Databases: PostgreSQL, MySQL
+Languages: SQL, Python
+Tools: Power BI, Tableau, Excel, Git, Makefile, MinGW
 
 📂 Projects
-1. 🛒 Superstore
+1. 📊 Sales Data Sample (ETL Automation with Makefile)
+Dataset: Sales Data Sample (PostgreSQL)
+Focus: End-to-End ETL Pipeline (Data Engineering + SQL)
+Highlights:
+Designed staging, dimension, and fact tables for a star schema
+Automated ETL pipeline using a Makefile and Python (psycopg2)
+Steps: load staging → clean → dims → fact → semantic views → data quality checks
+Makefile ensures repeatable, idempotent execution for resetting or refreshing the database
+Includes a usage guide with setup instructions for PostgreSQL, Python, and MinGW
+
+2. 🛒 Superstore
 Dataset: Global Superstore sales (2014–2017)
 Focus: Data Cleaning & Exploratory Data Analysis (EDA)
 Highlights:
@@ -12,7 +29,7 @@ Cleaned and standardized data (dates, duplicates, calculated Unit Price & Unit C
 Sales, profit, yearly trend, and margin analysis by category, product, and customer segments
 Identified loss-making products & tested business scenarios (discount reduction, price increase)
 
-2. 🌍 Global Layoffs
+3. 🌍 Global Layoffs
 
 Dataset: Worldwide layoffs (2020–2023)
 Focus: Data Cleaning & Trend Analysis
@@ -22,7 +39,7 @@ Layoff trends by company, industry, country, and year
 Top companies per year with highest layoffs
 Rolling monthly totals to track global workforce reductions
 
-3. 🎓 Tutorial
+4. 🎓 Tutorial
 
 Dataset: Practice data (Parks and Recreation)
 Focus: SQL Fundamentals
@@ -37,6 +54,9 @@ Data Cleaning & Preprocessing
 Exploratory Data Analysis (EDA)
 Aggregations, Joins & Window Functions
 Scenario Analysis & Business Insights
+ETL Automation with Makefile
+PostgreSQL Schema Design (Star Schema)
+Python + SQL Integration
 
 📌 How to Use
 Clone the repository to explore the projects:
