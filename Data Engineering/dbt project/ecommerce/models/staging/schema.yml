@@ -2,13 +2,30 @@
 version: 2
 
 models:
-  - name: my_first_dbt_model
-    description: "A starter dbt model"
+  - name: stg_customers
+    description: "Staging table for the customers dataset with cleaned and standardized fields"
     columns:
-      - name: id
+      - name: customer_id
         description: "The primary key for this table"
         data_tests:
           - unique
+          - not_null
+      - name: customer_unique_id
+        description: "The natural id pertaining to the customer"
+        data_tests:
+          - unique
+          - not_null
+      - name: zip_code_prefix
+        description: "The zip code of the customer referencing the geolocation"
+        data_tests:
+          - not_null
+      - name: city
+        description: "The city which the customer belongs to or lives"
+        data_tests:
+          - not_null
+      - name: state
+        description: "The state where the city of the customer is"
+        data_tests:
           - not_null
 
   - name: my_second_dbt_model

@@ -33,7 +33,7 @@ datasets = {}
 # Run the files in the for loop to read the csv files inside the folder
 for file in files:
     file_path = os.path.join(folder_path, file)
-    df = pd.read_csv(file_path, encoding="latin1")
+    df = pd.read_csv(file_path, encoding="utf-8")
     datasets[file.replace(".csv", "")] = df
     print(file + " loaded")
 
@@ -98,11 +98,11 @@ for name, df in datasets.items():
     table = raw_tables[name]
 
     with tempfile.NamedTemporaryFile(mode="w+", suffix=".csv", delete=False) as tmp:
-        df.to_csv(tmp.name, index=False, encoding='latin1')
+        df.to_csv(tmp.name, index=False, encoding='utf-8')
         tmp.flush() # This function will make sure that the file is complete to load in PostgreSQL
         path = tmp.name
 
-        with open(path, mode="r+", encoding='latin1') as file:
+        with open(path, mode="r+", encoding='utf-8') as file:
             curr.copy_expert(f"""
                 COPY raw.{table}
                 FROM STDIN
