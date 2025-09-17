@@ -109,7 +109,7 @@ for name, df in datasets.items():
                 WITH CSV DELIMITER ',' HEADER;
                              """, file)
         print(table + " successfully loaded in PostgreSQL")
-    os.remove(path)
+    os.remove(path) # Will delete the tempfile after using it
         
 conn.commit()
 
