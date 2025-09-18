@@ -1,3 +1,22 @@
+/*
+===========================================================
+ Model:       stg_order_payments.sql
+ Purpose:     Clean and standardize raw order payments data.
+ Author:      Amadeo F. Genio IV
+ Description: 
+   - Removes duplicate records from the raw dataset.
+   - Standardizes payment_type text for readability.
+   - Aggregates multiple payment attempts per order:
+       • Keeps the maximum payment attempt number.
+       • Sums payment values to capture the full amount paid.
+       • Retains the final payment_type and installment details.
+ Notes:
+   - Run after `raw.order_payments` has been loaded.
+   - Some orders have multiple retries (payment_attempts > 1), 
+     but the total_payment reflects the true amount collected.
+============================================================
+*/
+
 WITH deduplicate AS (
     SELECT DISTINCT *
     FROM {{ source('raw', 'order_payments') }}
@@ -27,4 +46,4 @@ WITH deduplicate AS (
     FROM full_table
 )
 
-SELECT * FROM final
+SELECT * FROM final;
