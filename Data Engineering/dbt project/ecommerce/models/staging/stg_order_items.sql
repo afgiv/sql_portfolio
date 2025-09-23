@@ -22,7 +22,7 @@ WITH deduplicate AS (
 ), standardize AS (
     SELECT order_id, order_item_id AS order_item_num, product_id,
     seller_id, shipping_limit_date AS expected_shipping_date,
-    price AS price, freight_value AS shipping_cost
+    price, freight_value AS shipping_cost
     FROM deduplicate
 ), integrity AS (
     SELECT *
