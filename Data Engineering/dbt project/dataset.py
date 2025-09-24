@@ -96,7 +96,6 @@ raw_tables = {
 
 for name, df in datasets.items():
     table = raw_tables[name]
-
     with tempfile.NamedTemporaryFile(mode="w+", suffix=".csv", delete=False) as tmp:
         df.to_csv(tmp.name, index=False, encoding='utf-8')
         tmp.flush() # This function will make sure that the file is complete to load in PostgreSQL

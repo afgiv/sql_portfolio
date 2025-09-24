@@ -16,6 +16,8 @@
 ============================================================
 */
 
+{{ config(materialized='incremental', unique_key='product_id') }}
+
 WITH deduplicate AS (
     SELECT DISTINCT *
     FROM {{ source('raw', 'products')}}

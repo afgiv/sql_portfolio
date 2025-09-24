@@ -15,6 +15,8 @@
 ============================================================
 */
 
+{{ config(materialized='incremental', unique_key='zip_code_prefix') }}
+
 WITH deduplicate AS (
   SELECT DISTINCT *
   FROM {{ source('raw', 'geolocation') }}

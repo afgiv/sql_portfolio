@@ -81,4 +81,25 @@ models:
           - not_null
   - name: stg_order_payments
     columns:
-      - name: 
+      - name: order_id
+        description: "The primary key for this table"
+        data_tests:
+          - not_null
+      - name: attempts_made
+        description: "The total number of attempts made to fully pay the product"
+        data_tests:
+          - not_null
+      - name: payment_type
+        description: "The type of mode of payment used"
+        data_tests:
+          - not_null
+      - name: payment_installments
+        description: "The total number of installments in which the product can be paid"
+        data_tests:
+          - not_null
+      - name: total_payment
+        description: "The total payment for the product (price and shipping cost)"
+  - name: stg_order_reviews
+    columns:
+      - name: review_id
+        description: ""

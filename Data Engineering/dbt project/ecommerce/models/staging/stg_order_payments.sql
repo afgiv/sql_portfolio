@@ -17,6 +17,8 @@
 ============================================================
 */
 
+{{ config(materialized='incremental', unique_key='order_id') }}
+
 WITH deduplicate AS (
     SELECT DISTINCT *
     FROM {{ source('raw', 'order_payments') }}

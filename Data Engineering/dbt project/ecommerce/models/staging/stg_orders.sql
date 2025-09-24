@@ -14,6 +14,8 @@
 ============================================================
 */
 
+{{ config(materialized='incremental', unique_key='order_id') }}
+
 WITH deduplicate AS (
     SELECT DISTINCT *
     FROM {{ source('raw', 'orders')}}
@@ -30,4 +32,7 @@ WITH deduplicate AS (
     FROM standardize
 )
 
-SELECT * FROM final;
+SELECT * FROM final
+{% if is_incremental() %}
+WHERE date_purchased > (SELECT MAX(date_purchased) FROM {{ this }})
+{% endif %}
