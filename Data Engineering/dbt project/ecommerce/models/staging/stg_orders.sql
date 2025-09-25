@@ -19,14 +19,19 @@
 WITH deduplicate AS (
     SELECT DISTINCT *
     FROM {{ source('raw', 'orders')}}
-), standardize AS (
+), misspelled AS (
+  SELECT order_id, customer_id, CASE WHEN order_status = 'canceled' THEN 'cancelled'
+  ELSE order_status END AS order_status, order_purchase_timestamp, order_approved_at,
+  order_delivered_carrier_date, order_estimated_delivery_date, order_delivered_customer_date
+  FROM deduplicate
+),standardize AS (
     SELECT order_id, customer_id, INITCAP(order_status) AS status,
     order_purchase_timestamp AS date_purchased,
     order_approved_at AS date_processed,
     order_delivered_carrier_date AS date_shipped,
     order_estimated_delivery_date AS expected_delivery_date,
     order_delivered_customer_date AS date_delivered
-    FROM deduplicate
+    FROM misspelled
 ), final AS (
     SELECT *
     FROM standardize

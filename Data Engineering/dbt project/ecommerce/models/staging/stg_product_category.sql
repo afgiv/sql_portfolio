@@ -20,7 +20,7 @@ WITH deduplicate AS (
     SELECT DISTINCT *
     FROM {{ source('raw', 'product_category')}}
 ), replace AS (
-    SELECT REPLACE(proudct_category_name, '_', ' ') AS product_category_name,
+    SELECT REPLACE(product_category_name, '_', ' ') AS product_category_name,
     REPLACE(product_category_name_english, '_', ' ') AS product_category_name_english
     FROM deduplicate
 ), standardize AS (
@@ -32,4 +32,4 @@ WITH deduplicate AS (
     FROM standardize
 )
 
-SELECT * FROM final;
+SELECT * FROM final

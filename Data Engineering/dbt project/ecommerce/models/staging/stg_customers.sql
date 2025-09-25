@@ -29,4 +29,4 @@ WITH deduplicate AS (
   FROM standardize
 )
 
-SELECT * FROM final;
+SELECT * FROM final

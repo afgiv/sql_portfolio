@@ -7,99 +7,225 @@ models:
     columns:
       - name: customer_id
         description: "The primary key for this table"
-        data_tests:
+        tests:
           - unique
           - not_null
       - name: customer_unique_id
-        description: "The natural id pertaining to the customer"
-        data_tests:
+        description: "A natural identifier for a customer; can be used to track repeat customers across multiple orders"
+        tests:
           - unique
           - not_null
       - name: zip_code_prefix
-        description: "The zip code of the customer referencing the geolocation"
-        data_tests:
+        description: "Zip code prefix of the customer, used to join with geolocation"
+        tests:
           - not_null
       - name: city
-        description: "The city which the customer belongs to or lives"
-        data_tests:
+        description: "Standardized city name of the customer"
+        tests:
           - not_null
       - name: state
-        description: "The state where the city of the customer is"
-        data_tests:
+        description: "Standardized two-letter state code of the customer"
+        tests:
           - not_null
   - name: stg_geolocation
+    description: "Staging table for the geolocation dataset with cleaned and standardized fields"
     columns:
       - name: zip_code_prefix
         description: "The primary key for this table being referenced by the customers and sellers table"
-        data_tests:
+        tests:
           - not_null
       - name: latitude
-        description: "An estimated reference point in latitude"
-        data_tests:
+        description: "Average latitude for the zip code"
+        tests:
           - not_null
       - name: longitude
-        descripion: "An estimated reference point in longitude"
-        data_tests:
+        description: "Average longitude for the zip code"
+        tests:
           - not_null
       - name: city
-        description: "The city where the zip code is based from"
-        data_tests:
+        description: "City associated with the zip code"
+        tests:
           - not_null
       - name: state
-        description: "The state where the zip code is based from"
-        data_tests:
+        description: "State associated with the zip code"
+        tests:
           - not_null
   - name: stg_order_items
+    description: "Staging table for the order items dataset with cleaned and standardized fields"
     columns:
       - name: order_id
-        description: "The primary key for this table"
-        data_tests:
+        description: "The id given to each order made"
+        tests:
           - not_null
       - name: order_item_num
-        description: "The number of item of the total number of orders made"
-        data_tests:
+        description: "The item sequence number within the order"
+        tests:
           - not_null
       - name: product_id
         description: "The reference key pointing to the products table"
-        data_tests:
+        tests:
           - not_null
       - name: seller_id
         description: "The reference key pointing to the sellers table"
-        data_tests:
+        tests:
           - not_null
       - name: expected_shipping_date
-        description: "The date where the product is expected to be shipped to the courier"
-        data_tests:
+        description: "Expected date the seller hands over the product to the carrier"
+        tests:
           - not_null
       - name: price
         description: "The price of the product"
-        data_tests:
+        tests:
           - not_null
       - name: shipping_cost
-        description: "The additional cost of the product for the shipping"
-        data_tests:
+        description: "Freight/shipping fee for the item"
+        tests:
           - not_null
   - name: stg_order_payments
+    description: "Staging table for the order payments dataset with cleaned and standardized fields"
     columns:
       - name: order_id
         description: "The primary key for this table"
-        data_tests:
+        tests:
           - not_null
       - name: attempts_made
-        description: "The total number of attempts made to fully pay the product"
-        data_tests:
+        description: "Number of payment attempts made for the order"
+        tests:
           - not_null
       - name: payment_type
         description: "The type of mode of payment used"
-        data_tests:
+        tests:
           - not_null
       - name: payment_installments
         description: "The total number of installments in which the product can be paid"
-        data_tests:
+        tests:
           - not_null
       - name: total_payment
-        description: "The total payment for the product (price and shipping cost)"
+        description: "Total value paid for the order (including shipping)"
+        tests:
+          - not_null
   - name: stg_order_reviews
+    description: "Staging table for the order reviews dataset with cleaned and standardized fields"
     columns:
       - name: review_id
-        description: ""
+        description: "Unique identifier for the review"
+        tests:
+          - not_null
+      - name: order_id
+        description: "The reference which order the review pertains to"
+        tests:
+          - not_null
+      - name: score
+        description: "Rating score (1 = worst, 5 = best)"
+        tests:
+          - not_null
+      - name: title
+        description: "The title of the review"
+      - name: comment
+        description: "The content of the review"
+      - name: date_submitted
+        description: "The date and time the review was submitted"
+        tests:
+          - not_null
+      - name: date_processed
+        description: "The date and time the review was processed after being submitted"
+        tests:
+          - not_null
+  - name: stg_orders
+    description: "Staging table for the orders dataset with cleaned and standardized fields"
+    columns:
+      - name: order_id
+        description: "The id given to each order made"
+        tests:
+          - not_null
+      - name: customer_id
+        description: "The reference key pertaining to the customer"
+        tests:
+          - not_null
+      - name: status
+        description: "Current lifecycle status of the order (e.g., delivered, shipped, cancelled)"
+        tests:
+          - not_null
+      - name: date_purchased
+        description: "The date and time which the product was purchased"
+        tests:
+          - not_null
+      - name: date_processed
+        description: "The date and time which the transaction is processed after being purchased"
+        tests:
+          - not_null
+      - name: date_shipped
+        description: "The date and time which the product was transferred to the carrier"
+        tests:
+          - not_null
+      - name: expected_delivery_date
+        description: "The expected date in which the product will be delivered to the customer"
+        tests:
+          - not_null
+      - name: date_delivered
+        description: "Timestamp when the order was marked as delivered to the customer"
+        tests:
+          - not_null
+  - name: stg_product_category
+    description: "Staging table for the product category dataset with cleaned and standardized fields"
+    columns:
+      - name: category_name
+        description: "Product category name in Portuguese"
+        tests:
+          - not_null
+      - name: category_translation
+        description: "Translated product category name in English"
+  - name: stg_products
+    description: "Staging table for the products dataset with cleaned and standardized fields"
+    columns:
+      - name: product_id
+        description: "The primary key for this table"
+        tests:
+          - not_null
+      - name: category_name
+        description: "The category it belongs to referencing the product category table"
+        tests:
+          - not_null
+      - name: title_length
+        description: "Number of characters in the product title"
+        tests:
+          - not_null
+      - name: description_length
+        description: "Number of characters in the product description"
+        tests:
+          - not_null
+      - name: photos_qty
+        description: "Number of product photos available"
+        tests:
+          - not_null
+      - name: weigth_g
+        description: "The weight of the product in grams"
+        tests:
+          - not_null
+      - name: length_cm
+        description: "The length of the product in centimeters"
+        tests:
+          - not_null
+      - name: width_cm
+        description: "The width of the product in centimeters"
+        tests:
+          - not_null
+  - name: stg_sellers
+    description: "Staging table for the sellers dataset with cleaned and standardized fields"
+    columns:
+      - name: seller_id
+        description: "The primary key for this table"
+        tests:
+          - not_null
+      - name: zip_code_prefix
+        description: "Seller's zip code prefix, joins with geolocation"
+        tests:
+          - not_null
+      - name: city
+        description: "The city where the seller belongs to"
+        tests:
+          - not_null
+      - name: state
+        description: "The state where the city of the seller is"
+        tests:
+          - not_null

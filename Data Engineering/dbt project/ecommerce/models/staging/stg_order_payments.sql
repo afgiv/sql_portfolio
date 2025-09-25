@@ -29,7 +29,7 @@ WITH deduplicate AS (
     FROM deduplicate
 ), standardize AS (
     SELECT order_id, payment_sequential AS payment_attempts,
-    INITCAP(payment_type), payment_installments, payment_value
+    INITCAP(payment_type) AS payment_type, payment_installments, payment_value
     FROM replace
 ), max_attempts AS (
     SELECT order_id, MAX(payment_attempts) as attempts_made,
@@ -48,4 +48,4 @@ WITH deduplicate AS (
     FROM full_table
 )
 
-SELECT * FROM final;
+SELECT * FROM final

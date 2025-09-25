@@ -29,9 +29,9 @@ WITH deduplicate AS (
   FROM deduplicate
 ), condense AS (
   SELECT zip_code_prefix,
-  AVG(latitude),
-  AVG(longitude,)
-  MIN(city),
+  AVG(latitude) AS latitude,
+  AVG(longitude) AS longitude,
+  MIN(city) AS city,
   MIN(state) AS state
   FROM standardize
   GROUP BY zip_code_prefix
@@ -40,4 +40,4 @@ WITH deduplicate AS (
   FROM condense
 )
 
-SELECT * FROM final;
+SELECT * FROM final

@@ -35,4 +35,4 @@ WITH deduplicate AS (
     FROM integrity
 )
 
-SELECT * FROM final;
+SELECT * FROM final

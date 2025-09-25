@@ -32,15 +32,20 @@ WITH deduplicate AS (
     product_name_length, product_description_length, product_photos_qty,
     product_weight_g, product_length_cm, product_height_cm, product_width_cm
     FROM zeroes
-), standardize AS (
+), nulls AS (
+  SELECT product_id, COALESCE(product_category_name, 'Unkown') AS product_category_name,
+  product_name_length, product_description_length, product_photos_qty, product_weight_g,
+  product_length_cm, product_height_cm, product_width_cm
+  FROM replace
+),standardize AS (
     SELECT product_id, INITCAP(product_category_name) AS category_name,
     product_name_length AS title_length, product_description_length AS description_length,
-    product_photos_qty AS photos_qty, product_weight_g AS weight_cm,
+    product_photos_qty AS photos_qty, product_weight_g AS weight_g,
     product_length_cm AS length_cm, product_width_cm AS width_cm
-    FROM replace
+    FROM nulls
 ), final AS (
     SELECT *
     FROM standardize
 )
 
-SELECT * FROM final;
+SELECT * FROM final
