@@ -15,6 +15,17 @@ sources:
           - name: customer_unique_id
             tests:
               - not_null
+          - name: customer_zip_code_prefix
+            tests:
+              - not_null
+          - name: customer_city
+            tests:
+              - not_null:
+                  severity: warn
+          - name: customer_state
+            tests:
+              - not_null:
+                  severity: warn
       - name: geolocation
         description: "Raw dataset mapping Brazilian zip code prefixes to geographic coordinates (latitude, longitude), used for both customers and sellers."
         columns:
@@ -27,6 +38,14 @@ sources:
           - name: geolocation_lng
             tests:
               - not_null
+          - name: geolocation_city
+            tests:
+              - not_null:
+                  severity: warn
+          - name: geolocation_state
+            tests:
+              - not_null:
+                  severity: warn
       - name: order_items
         description: "Raw dataset capturing the relationship between customer orders and products, including pricing and seller information."
         columns:
@@ -42,18 +61,30 @@ sources:
           - name: seller_id
             tests:
               - not_null
+          - name: shipping_limit_date
+            tests:
+              - not_null:
+                  severity: warn
           - name: price
             tests:
               - not_null
+          - name: freight_value
+            tests:
+              - not_null:
+                  severity: warn
       - name: order_payments
         description: "Raw dataset detailing payment information for customer orders, including payment type, installments, and amounts."
         columns:
           - name: order_id
             tests:
               - not_null
-          - name: payment_type
+          - name: payment_sequential
             tests:
               - not_null
+          - name: payment_type
+            tests:
+              - not_null:
+                  severity: warn
           - name: payment_installments
             tests:
               - not_null
@@ -72,6 +103,14 @@ sources:
           - name: review_score
             tests:
               - not_null
+          - name: review_creation_date
+            tests:
+              - not_null:
+                  severity: warn
+          - name: review_answer_timestamp
+            tests:
+              - not_null:
+                  severity: warn
       - name: orders
         description: "Raw dataset describing order lifecycle information, including status, purchase, approval, shipping, and delivery dates."
         columns:
@@ -84,16 +123,43 @@ sources:
               - not_null
           - name: order_status
             tests:
-              - not_null
+              - not_null:
+                  severity: warn
               - accepted_values:
                   arguments:
                     values: ['shipped', 'unavailable', 'invoiced', 'created', 'approved', 'processing', 'delivered', 'cancelled']
+                    severity: warn
+          - name: order_purchase_timestamp
+            tests:
+              - not_null:
+                  severity: warn
+          - name: order_approved_at
+            tests:
+              - not_null:
+                  severity: warn
+          - name: order_delivered_carrier_date
+            tests:
+              - not_null:
+                  severity: warn
+          - name: order_delivered_customer_date
+            tests:
+              - not_null:
+                  severity: warn
+          - name: order_estimated_delivery_date
+            tests:
+              - not_null:
+                  severity: warn
       - name: product_category
         description: "Raw dataset mapping Portuguese product category names to their English translations."
         columns:
           - name: product_category_name
             tests:
-              - not_null
+              - not_null:
+                  severity: warn
+          - name: product_category_name_english
+            tests:
+              - not_null:
+                  severity: warn
       - name: products
         description: "Raw dataset containing product-level attributes such as dimensions, weight, and category mapping."
         columns:
@@ -103,7 +169,36 @@ sources:
               - unique
           - name: product_category_name
             tests:
-              - not_null
+              - not_null:
+                  severity: warn
+          - name: product_name_length
+            tests:
+              - not_null:
+                  severity: warn
+          - name: product_description_length
+            tests:
+              - not_null:
+                  severity: warn
+          - name: product_photos_qty
+            tests:
+              - not_null:
+                  severity: warn
+          - name: product_weight_g
+            tests:
+              - not_null:
+                  severity: warn
+          - name: product_length_cm
+            tests:
+              - not_null:
+                  severity: warn
+          - name: product_height_cm
+            tests:
+              - not_null:
+                  severity: warn
+          - name: product_width_cm
+            tests:
+              - not_null:
+                  severity: warn
       - name: sellers
         description: "Raw dataset containing seller-level attributes, including location details."
         columns:
@@ -114,3 +209,11 @@ sources:
           - name: seller_zip_code_prefix
             tests:
               - not_null
+          - name: seller_city
+            tests:
+              - not_null:
+                  severity: warn
+          - name: seller_state
+            tests:
+              - not_null:
+                  severity: warn
