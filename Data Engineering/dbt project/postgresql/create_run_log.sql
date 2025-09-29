@@ -18,8 +18,9 @@
 CREATE TABLE IF NOT EXISTS analytics.run_log (
 	run_id SERIAL UNIQUE,
 	run_time TIMESTAMP,
+	category VARCHAR(50),
 	status VARCHAR(50),
-	models_run INTEGER,
+	run_type TEXT,
 	rows_processed BIGINT,
-	error TEXT
+	message TEXT
 );
