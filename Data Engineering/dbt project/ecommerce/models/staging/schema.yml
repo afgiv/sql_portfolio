@@ -26,6 +26,7 @@ models:
         description: "The primary key for this table being referenced by the customers and sellers table"
         tests:
           - not_null
+          - unique
       - name: latitude
         description: "Average latitude for the zip code"
         tests:
@@ -36,6 +37,11 @@ models:
           - not_null
   - name: stg_order_items
     description: "Staging table for the order items dataset with cleaned and standardized fields"
+    tests:
+      - unique:
+          column_name:
+            - order_id
+            - order_item_num
     columns:
       - name: order_id
         description: "The id given to each order made"
@@ -68,6 +74,7 @@ models:
         description: "The primary key for this table"
         tests:
           - not_null
+          - unique
       - name: attempts_made
         description: "Number of payment attempts made for the order"
         tests:
@@ -102,6 +109,7 @@ models:
         description: "The id given to each order made"
         tests:
           - not_null
+          - unique
       - name: customer_id
         description: "The reference key pertaining to the customer"
         tests:
@@ -117,8 +125,7 @@ models:
         description: "Product category name in Portuguese"
         tests:
           - not_null
-      - name: category_translation
-        description: "Translated product category name in English"
+          - unique
   - name: stg_products
     description: "Staging table for the products dataset with cleaned and standardized fields"
     columns:
@@ -126,6 +133,7 @@ models:
         description: "The primary key for this table"
         tests:
           - not_null
+          - unique
       - name: category_name
         description: "The category it belongs to referencing the product category table"
         tests:
@@ -137,6 +145,7 @@ models:
         description: "The primary key for this table"
         tests:
           - not_null
+          - unique
       - name: zip_code_prefix
         description: "Seller's zip code prefix, joins with geolocation"
         tests:

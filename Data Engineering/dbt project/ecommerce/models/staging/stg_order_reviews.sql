@@ -21,7 +21,7 @@
 WITH deduplicate AS (
     SELECT DISTINCT *
     FROM {{ source('raw', 'order_reviews') }}
-), standardize AS (
+),standardize AS (
     SELECT review_id, order_id, review_score AS score,
     INITCAP(review_comment_title) AS title, review_comment_message AS comment,
     review_creation_date AS date_submitted,
