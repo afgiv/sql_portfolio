@@ -13,7 +13,6 @@ models:
       - name: customer_unique_id
         description: "A natural identifier for a customer; can be used to track repeat customers across multiple orders"
         tests:
-          - unique
           - not_null
       - name: zip_code_prefix
         description: "Zip code prefix of the customer, used to join with geolocation"
@@ -38,8 +37,8 @@ models:
   - name: stg_order_items
     description: "Staging table for the order items dataset with cleaned and standardized fields"
     tests:
-      - unique:
-          column_name:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
             - order_id
             - order_item_num
     columns:

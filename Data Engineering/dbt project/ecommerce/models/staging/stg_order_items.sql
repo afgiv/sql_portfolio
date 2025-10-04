@@ -16,7 +16,7 @@
 ============================================================
 */
 
-{{ config(materialized='incremental', unique_key=['order_id', 'order_item_num']) }}
+{{ config(unique_key=['order_id', 'order_item_num']) }}
 
 WITH deduplicate AS (
     SELECT DISTINCT *

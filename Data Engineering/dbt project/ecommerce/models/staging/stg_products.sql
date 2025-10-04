@@ -16,7 +16,7 @@
 ============================================================
 */
 
-{{ config(materialized='incremental', unique_key='product_id') }}
+{{ config(unique_key='product_id') }}
 
 WITH deduplicate AS (
     SELECT DISTINCT *
@@ -41,7 +41,7 @@ WITH deduplicate AS (
     SELECT product_id, INITCAP(product_category_name) AS category_name,
     product_name_length AS title_length, product_description_length AS description_length,
     product_photos_qty AS photos_qty, product_weight_g AS weight_g,
-    product_length_cm AS length_cm, product_width_cm AS width_cm
+    product_length_cm AS length_cm, product_height_cm AS height_cm, product_width_cm AS width_cm
     FROM nulls
 ), final AS (
     SELECT *

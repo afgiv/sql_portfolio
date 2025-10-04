@@ -1,0 +1,6 @@
+version: 2
+
+models:
+  - name: int_full_table
+    description: "The one true source table joined by all tables"
+    

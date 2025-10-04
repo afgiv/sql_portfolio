@@ -14,7 +14,7 @@
 ============================================================
 */
 
-{{ config(materialized='incremental', unique_key=['category_name', 'category_translation']) }}
+{{ config(unique_key=['category_name', 'category_translation']) }}
 
 WITH deduplicate AS (
     SELECT DISTINCT *
