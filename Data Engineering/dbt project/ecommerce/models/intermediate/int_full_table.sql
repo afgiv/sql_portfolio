@@ -11,7 +11,7 @@ WITH orders AS (
 ), customers AS (
     SELECT p.*, c.customer_unique_id, c.zip_code_prefix AS customer_zip_code,
     c.city AS customer_city, c.state AS customer_state, c.customer_lat, c.customer_lng,
-    c.customer_city AS c.geo_c_city, c.state AS geo_c_state
+    c.customer_city AS geo_c_city, c.state AS geo_c_state
     FROM products AS p
     LEFT JOIN {{ ref('int_customers') }} AS c
         ON p.customer_id = c.customer_id

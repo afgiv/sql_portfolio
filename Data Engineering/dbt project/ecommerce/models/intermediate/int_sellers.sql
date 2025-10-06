@@ -5,7 +5,7 @@ WITH sellers AS (
     SELECT s.*, g.latitude AS seller_lat, g.longitude AS seller_lng,
     g.city AS seller_city, g.state AS seller_state
     FROM sellers AS s
-    JOIN {{ reg('stg_geolocation') }} AS g
+    JOIN {{ ref('stg_geolocation') }} AS g
         ON s.zip_code_prefix = g.zip_code_prefix
 ), final AS (
     SELECT *

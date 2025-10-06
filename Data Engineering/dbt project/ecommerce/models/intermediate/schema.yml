@@ -1,6 +1,97 @@
 version: 2
 
 models:
-  - name: int_full_table
-    description: "The one true source table joined by all tables"
-    
+  - name: int_orders
+    description: "Orders-related level information (reviews, delivery dates, prices, payments)"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_id
+            - order_item_num
+    columns:
+      - name : order_id
+        description: "One of the composite keys"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+      - name: order_item_num
+        description: "The other composite key; the item sequence within the order"
+        tests:
+          - not_null
+      - name: review_id
+        description: "The identifier for the review"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_order_reviews')
+              field: review_id
+      - name: product_id
+        description: "The reference key pointing to the products table"
+        tests:
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
+      - name: seller_id
+        description: "The reference key pointing to the sellers table"
+        tests:
+          - relationships:
+              to: ref('stg_sellers')
+              field: seller_id
+      - name: customer_id
+        description: "The reference key pointing to the customers table"
+        tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+  - name: int_products
+    description: "Products related level information"
+    columns:
+      - name: product_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: category_name
+        description: "The category the product belongs to"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_product_category')
+              field: category_name
+  - name: int_customers
+    description: "Customers spatial level information"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['customer_id', 'zip_code_prefix']
+    columns:
+      - name: customer_id
+        description: "The primary key for this table"
+        tests:
+          - not_null
+      - name: zip_code_prefix
+        description: "Zip code prefix of the customer"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_geolocation')
+              field: zip_code_prefix
+  - name: int_sellers
+    description: "Sellers spatial level information"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['seller_id', 'zip_code_prefix']
+    columns:
+      - name: seller_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: zip_code_prefix
+        description: "Zip code prefix of the seller"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_geolocation')
+              field: zip_code_prefix

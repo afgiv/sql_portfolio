@@ -28,14 +28,19 @@ with open(file) as f:
 # Parse the json file to catch the warn or error threads
 for dict in results['results']:
     status = dict.get('status')
-    time_completed = dict.get('timing')[1].get('completed_at')
+    if status in ["success", "pass", "warn"]:
+        time_completed = dict.get('timing')[1].get('completed_at')
+    elif status == "error":
+        time_completed = dict.get('timing')[0].get('completed_at')
+
     message = dict.get('message')
     run_type = dict.get('unique_id')
+
     if dict.get('unique_id').startswith("test"):
         rows_affected = dict.get('failures')
     else:
         rows_affected = dict.get('adapter_response').get('rows_affected')
-    
+
 
     curr.execute("""
         INSERT INTO analytics.run_log(run_time, category, status, run_type, rows_processed, message)

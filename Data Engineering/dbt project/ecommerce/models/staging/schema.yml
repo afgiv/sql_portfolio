@@ -38,9 +38,7 @@ models:
     description: "Staging table for the order items dataset with cleaned and standardized fields"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - order_id
-            - order_item_num
+          combination_of_columns: ['order_id', 'order_item_num']
     columns:
       - name: order_id
         description: "The id given to each order made"
@@ -90,7 +88,7 @@ models:
     description: "Staging table for the order reviews dataset with cleaned and standardized fields"
     columns:
       - name: review_id
-        description: "Unique identifier for the review"
+        description: "The identifier for the review"
         tests:
           - not_null
       - name: order_id
