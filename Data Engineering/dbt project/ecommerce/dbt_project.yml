@@ -40,7 +40,7 @@ models:
       +materialized: incremental
       +tags : ["staging"]
     intermediate:
-      +schema : intermediate
+      +schema : to_intermediate
       +materialized: table
       +tags: ["intermediate"]
     analytics:

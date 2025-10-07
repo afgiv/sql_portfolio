@@ -94,6 +94,7 @@ models:
       - name: order_id
         description: "The reference which order the review pertains to"
         tests:
+          - unique
           - not_null
       - name: score
         description: "Rating score (1 = worst, 5 = best)"
