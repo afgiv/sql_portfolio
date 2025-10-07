@@ -1,0 +1,39 @@
+/Data Engineering/Sales Data Sample/.env
+/Data Engineering/Sales Data Sample/.idea
+/Data Engineering/dbt project/venv/
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Distribution / packaging
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Environment / secrets
+.env
+*.env
+.env.*
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VSCode settings
+.vscode/
+.history/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Kaggle / cache folders
+.kaggle/
+.kagglehub/
+.cache/
