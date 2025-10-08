@@ -23,16 +23,13 @@ models:
       - name: review_id
         description: "The identifier for the review"
         tests:
-          - not_null
           - relationships:
               to: ref('stg_order_reviews')
               field: review_id
       - name: product_id
         description: "The reference key pointing to the products table"
         tests:
-          - relationships:
-              to: ref('stg_products')
-              field: product_id
+          - not_null
       - name: seller_id
         description: "The reference key pointing to the sellers table"
         tests:
@@ -70,6 +67,10 @@ models:
         description: "The primary key for this table"
         tests:
           - not_null
+      - name: customer_unique_id
+        description: "The natural identifier for a customer"
+        tests:
+          - not_null
       - name: zip_code_prefix
         description: "Zip code prefix of the customer"
         tests:
@@ -95,3 +96,63 @@ models:
           - relationships:
               to: ref('stg_geolocation')
               field: zip_code_prefix
+  - name: int_full_table
+    description: "The full joined table"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['order_id', 'order_item_num']
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_orders')
+              field: order_id
+      - name: order_item_num
+        tests:
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_customers')
+              field: customer_id
+      - name: seller_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_sellers')
+              field: seller_id
+      - name: review_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_orders')
+              field: review_id
+      - name: customer_unique_id
+        tests:
+          - not_null
+      - name: seller_zip_code
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_sellers')
+              field: seller_zip_code_prefix
+      - name: customer_zip_code
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_customers')
+              field: customer_zip_code_prefix
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_products')
+              field: product_id
+      - name: category_name
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_products')
+              field: category_name

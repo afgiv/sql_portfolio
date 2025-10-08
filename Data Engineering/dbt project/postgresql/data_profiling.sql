@@ -58,3 +58,47 @@ ROUND((CAST(COUNT(DISTINCT customer_zip_code) AS NUMERIC)/COUNT(*)) * 100, 2) AS
 FROM staging_to_intermediate.int_full_table;
 -- Result: 13.19%
 -- Action: customer_zip_code is a potential dimension key
+
+SELECT COUNT(*) AS total_rows, COUNT(DISTINCT customer_city) AS unique_values,
+ROUND((CAST(COUNT(DISTINCT customer_city) AS NUMERIC)/COUNT(*)) * 100, 2) AS unique_pct
+FROM staging_to_intermediate.int_full_table;
+-- Result: 3.62%
+-- Action: customer_city is a potential dimension attribute for another table
+
+SELECT COUNT(*) AS total_rows, COUNT(DISTINCT customer_state) AS unique_values,
+ROUND((CAST(COUNT(DISTINCT customer_state) AS NUMERIC)/COUNT(*)) * 100, 2) AS unique_pct
+FROM staging_to_intermediate.int_full_table;
+-- Result: 0.02%
+-- Action: customer_state is a potential dimension attribute for another table
+
+SELECT COUNT(*) AS total_rows, COUNT(DISTINCT geo_c_city) AS unique_values,
+ROUND((CAST(COUNT(DISTINCT geo_c_city) AS NUMERIC)/COUNT(*)) * 100, 2) AS unique_pct
+FROM staging_to_intermediate.int_full_table;
+-- Result: 3.59%
+-- Action: customer_state is a potential dimension attribute for another table
+
+SELECT COUNT(*) AS total_rows, COUNT(DISTINCT geo_c_state) AS unique_values,
+ROUND((CAST(COUNT(DISTINCT geo_c_state) AS NUMERIC)/COUNT(*)) * 100, 2) AS unique_pct
+FROM staging_to_intermediate.int_full_table;
+
+
+-- Seller Dimension
+SELECT COUNT(*) AS total_rows, COUNT(DISTINCT seller_zip_code) AS unique_values,
+ROUND((CAST(COUNT(DISTINCT seller_zip_code) AS NUMERIC)/COUNT(*)) * 100, 2) AS unique_pct
+FROM staging_to_intermediate.int_full_table;
+-- Result: 1.99%
+-- Action: seller_zip_code is a potential dimension attribute for another table
+
+SELECT COUNT(*) AS total_rows, COUNT(DISTINCT seller_city) AS unique_values,
+ROUND((CAST(COUNT(DISTINCT seller_city) AS NUMERIC)/COUNT(*)) * 100, 2) AS unique_pct
+FROM staging_to_intermediate.int_full_table;
+-- Result: 0.54%
+-- Action: seller_city is a potential dimension attribute for another table
+
+SELECT COUNT(*) AS total_rows, COUNT(DISTINCT seller_state) AS unique_values,
+ROUND((CAST(COUNT(DISTINCT seller_state) AS NUMERIC)/COUNT(*)) * 100, 2) AS unique_pct
+FROM staging_to_intermediate.int_full_table;
+-- Result: 0.02%
+-- Action: seller_state is a potential dimension attribute for another table
+
+-- Product Category
