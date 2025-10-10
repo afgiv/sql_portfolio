@@ -35,12 +35,19 @@ WITH deduplicate AS (
         ON d.order_id = m.order_id
         AND d.review_creation_date = m.review_creation_date
         AND d.review_answer_timestamp = m.review_answer_timestamp
+), consistency AS (
+    SELECT *
+    FROM full_table
+    WHERE order_id IN (
+        SELECT order_id
+        FROM {{ ref('stg_orders') }}
+    )
 ),standardize AS (
     SELECT review_id, order_id, review_score AS score,
     INITCAP(review_comment_title) AS title, review_comment_message AS comment,
     review_creation_date AS date_submitted,
     review_answer_timestamp AS date_processed
-    FROM full_table
+    FROM consistency
 ), final AS (
     SELECT *
     FROM standardize

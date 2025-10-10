@@ -52,6 +52,10 @@ sources:
           - name: order_id
             tests:
               - not_null
+              - relationships:
+                  to: source('raw', 'orders')
+                  field: order_id
+                  severity: warn
           - name: order_item_id
             tests:
               - not_null
@@ -78,6 +82,10 @@ sources:
           - name: order_id
             tests:
               - not_null
+              - relationships:
+                  to: source('raw', 'orders')
+                  field: order_id
+                  severity: warn
           - name: payment_sequential
             tests:
               - not_null
@@ -100,6 +108,10 @@ sources:
           - name: order_id
             tests:
               - not_null
+              - relationships:
+                  to: source('raw', 'orders')
+                  field: order_id
+                  severity: warn
           - name: review_score
             tests:
               - not_null

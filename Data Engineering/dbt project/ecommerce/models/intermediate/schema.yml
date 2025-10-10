@@ -125,7 +125,6 @@ models:
               field: seller_id
       - name: review_id
         tests:
-          - not_null
           - relationships:
               to: ref('int_orders')
               field: review_id

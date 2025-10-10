@@ -30,9 +30,16 @@ WITH deduplicate AS (
     SELECT *
     FROM standardize
     WHERE price > 0 AND shipping_cost > 0
-), final AS (
+), consistency AS (
     SELECT *
     FROM integrity
+    WHERE order_id IN (
+        SELECT order_id
+        FROM {{ ref('stg_orders') }}
+    )
+), final AS (
+    SELECT *
+    FROM consistency
 )
 
 SELECT * FROM final
