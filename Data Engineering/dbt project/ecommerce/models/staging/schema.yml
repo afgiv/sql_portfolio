@@ -44,6 +44,9 @@ models:
         description: "The id given to each order made"
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
       - name: order_item_num
         description: "The item sequence number within the order"
         tests:
@@ -52,10 +55,16 @@ models:
         description: "The reference key pointing to the products table"
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: product_id
       - name: seller_id
         description: "The reference key pointing to the sellers table"
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_sellers')
+              field: seller_id
       - name: price
         description: "The price of the product"
         tests:
@@ -72,6 +81,9 @@ models:
         tests:
           - not_null
           - unique
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
       - name: attempts_made
         description: "Number of payment attempts made for the order"
         tests:
@@ -96,6 +108,9 @@ models:
         tests:
           - unique
           - not_null
+          - relationships:
+              to: ref('st_orders')
+              field: order_id
       - name: score
         description: "Rating score (1 = worst, 5 = best)"
         tests:
@@ -112,6 +127,9 @@ models:
         description: "The reference key pertaining to the customer"
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
       - name: status
         description: "Current lifecycle status of the order (e.g., delivered, shipped, cancelled)"
         tests:

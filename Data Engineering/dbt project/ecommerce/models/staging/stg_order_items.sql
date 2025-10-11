@@ -37,9 +37,16 @@ WITH deduplicate AS (
         SELECT order_id
         FROM {{ ref('stg_orders') }}
     )
-), final AS (
+), consistency_2 AS (
     SELECT *
     FROM consistency
+    WHERE product_id IN (
+        SELECT product_id
+        FROM {{ ref('stg_products')}}
+    )
+), final AS (
+    SELECT *
+    FROM consistency_2
 )
 
 SELECT * FROM final

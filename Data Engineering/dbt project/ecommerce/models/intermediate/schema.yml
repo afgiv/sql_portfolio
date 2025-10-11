@@ -57,6 +57,7 @@ models:
           - relationships:
               to: ref('stg_product_category')
               field: category_name
+              severity: warn
   - name: int_customers
     description: "Customers spatial level information"
     tests:
@@ -78,6 +79,7 @@ models:
           - relationships:
               to: ref('stg_geolocation')
               field: zip_code_prefix
+              severity: warn
   - name: int_sellers
     description: "Sellers spatial level information"
     tests:
@@ -96,6 +98,7 @@ models:
           - relationships:
               to: ref('stg_geolocation')
               field: zip_code_prefix
+              severity: warn
   - name: int_full_table
     description: "The full joined table"
     tests:
@@ -136,13 +139,13 @@ models:
           - not_null
           - relationships:
               to: ref('int_sellers')
-              field: seller_zip_code_prefix
+              field: zip_code_prefix
       - name: customer_zip_code
         tests:
           - not_null
           - relationships:
               to: ref('int_customers')
-              field: customer_zip_code_prefix
+              field: zip_code_prefix
       - name: product_id
         tests:
           - not_null

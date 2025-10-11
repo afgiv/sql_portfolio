@@ -43,9 +43,16 @@ WITH deduplicate AS (
     JOIN max_attempts AS m
         ON s.order_id = m.order_id
         AND s.payment_attempts = m.attempts_made
-), final AS (
+), consistency AS (
     SELECT *
     FROM full_table
+    WHERE order_id IN (
+        SELECT order_id
+        FROM {{ ref('stg_orders')}}
+    )
+), final AS (
+    SELECT *
+    FROM consistency
 )
 
 SELECT * FROM final
