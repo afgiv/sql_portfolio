@@ -1,99 +1,68 @@
-SQL Portfolio
+# 🗄️ SQL & Data Engineering Portfolio
 
-Welcome to my SQL & Data Engineering Portfolio! 🚀
-This repository showcases projects where I clean, transform, and analyze datasets, as well as build data engineering pipelines to automate database workflows.
-Each folder contains SQL scripts or automation pipelines highlighting different aspects of data analysis and engineering.
+Welcome to my SQL & Data Engineering Portfolio! This repository showcases projects where I clean, transform, and analyze datasets, as well as build automated database and dbt modeling workflows.
 
-🛠 Tech Stack
+> **Companion Repository:** Looking for interactive Power BI dashboards, DAX measures, and end-to-end retail reporting? View my **[Power BI & Data Analytics Portfolio (`pbi_portfolio`)](https://github.com/afgiv/pbi_portfolio)**.
 
-Databases: PostgreSQL, MySQL
+---
 
-Languages: SQL, Python
+## 🛠️ Tech Stack
+- **Databases & Warehousing:** PostgreSQL, MySQL
+- **Transformations & Modeling:** SQL, dbt (Data Build Tool), Star Schema Design
+- **Scripting & Automation:** Python (`psycopg2`), Makefile, Git, MinGW
 
-Tools: Power BI, Tableau, Excel, Git, Makefile, MinGW
+---
 
-📂 Projects
-1. 📊 Sales Data Sample (ETL Automation with Makefile)
+## 📂 Projects
 
-Dataset: Sales Data Sample (PostgreSQL)
-Focus: End-to-End ETL Pipeline (Data Engineering + SQL)
+### 1. 🧱 [Ecommerce Analytics Pipeline (dbt + PostgreSQL)](./Data%20Engineering/dbt%20project)
+- **Dataset:** Ecommerce Transaction Data (`PostgreSQL` + `dbt`)
+- **Focus:** Analytics Engineering, Modular SQL Transformations & Data Quality Logging
+- **Highlights:**
+  - Built a modular **dbt** transformation pipeline (`ecommerce`) backed by **PostgreSQL** to turn raw ecommerce records into analytics-ready models.
+  - Automated dataset ingestion (`dataset.py`) and pipeline run/test result logging (`log_results.py`) in Python.
+  - Documented data lineage and warehouse architecture in `diagrams/` for clear pipeline traceability.
 
-Highlights:
+---
 
-Designed staging, dimension, and fact tables for a star schema
+### 2. 📊 [Sales Data Sample (ETL Automation with Makefile)](./Data%20Engineering/Sales%20Data%20Sample)
+- **Dataset:** Sales Data Sample (`PostgreSQL`)
+- **Focus:** End-to-End ETL Pipeline (Data Engineering + SQL)
+- **Highlights:**
+  - Designed staging, dimension, and fact tables for a star schema.
+  - Automated ETL pipeline using a `Makefile` and Python (`psycopg2`): load staging → clean → dims → fact → semantic views → data quality checks.
+  - Ensured repeatable, idempotent execution for resetting or refreshing the database, complete with a setup guide for PostgreSQL, Python, and MinGW.
 
-Automated ETL pipeline using a Makefile and Python (psycopg2)
+---
 
-Steps: load staging → clean → dims → fact → semantic views → data quality checks
+### 3. 🛒 [Superstore — Retail Sales & Margin Scenario Analysis](./Superstore)
+- **Dataset:** Global Superstore Sales (2014–2017)
+- **Focus:** Data Cleaning & Exploratory Data Analysis (EDA)
+- **Highlights:**
+  - Cleaned and standardized data (dates, duplicates, calculated Unit Price & Unit Cost).
+  - Analyzed sales, profit, yearly trends, and margins across categories, products, and customer segments.
+  - Identified loss-making products and modeled business scenarios (discount reduction vs. price increase).
 
-Makefile ensures repeatable, idempotent execution for resetting or refreshing the database
+---
 
-Includes a usage guide with setup instructions for PostgreSQL, Python, and MinGW
+### 4. 🌍 [Global Layoffs — Workforce Trend Analysis](./Global%20Layoffs)
+- **Dataset:** Worldwide Layoffs (2020–2023)
+- **Focus:** Data Cleaning & Trend Analysis
+- **Highlights:**
+  - Standardized missing values, misspellings, duplicates, and date formatting.
+  - Analyzed layoff trends by company, industry, country, and year, including top companies per year and rolling monthly totals.
 
-2. 🛒 Superstore
+---
 
-Dataset: Global Superstore sales (2014–2017)
+### 5. 🎓 [SQL Fundamentals Reference](./Tutorial)
+- **Dataset:** Practice Dataset (Parks and Recreation)
+- **Focus:** Core SQL Querying Patterns
+- **Highlights:**
+  - Reference queries covering filtering, aggregations (`AVG`, `MAX`, `MIN`, `COUNT`), `GROUP BY`, `HAVING`, multi-table joins, and calculated columns.
 
-Focus: Data Cleaning & Exploratory Data Analysis (EDA)
+---
 
-Highlights:
-
-Cleaned and standardized data (dates, duplicates, calculated Unit Price & Unit Cost)
-
-Sales, profit, yearly trend, and margin analysis by category, product, and customer segments
-
-Identified loss-making products & tested business scenarios (discount reduction, price increase)
-
-3. 🌍 Global Layoffs
-
-Dataset: Worldwide layoffs (2020–2023)
-
-Focus: Data Cleaning & Trend Analysis
-
-Highlights:
-
-Handled missing values, misspellings, duplicates, and date formatting
-
-Layoff trends by company, industry, country, and year
-
-Top companies per year with highest layoffs
-
-Rolling monthly totals to track global workforce reductions
-
-4. 🎓 Tutorial
-
-Dataset: Practice data (Parks and Recreation)
-
-Focus: SQL Fundamentals
-
-Highlights:
-
-Filtering, grouping, and aggregations (AVG, MAX, MIN, COUNT)
-
-Using GROUP BY, HAVING, and ORDER BY
-
-Joins across employee demographics and salary tables
-
-Sorting, limiting results, and calculated columns
-
-🛠 Skills Demonstrated
-
-Data Cleaning & Preprocessing
-
-Exploratory Data Analysis (EDA)
-
-Aggregations, Joins & Window Functions
-
-Scenario Analysis & Business Insights
-
-ETL Automation with Makefile
-
-PostgreSQL Schema Design (Star Schema)
-
-Python + SQL Integration
-
-📌 How to Use
-
-Clone the repository to explore the projects:
-
-git clone https://github.com/afgiv/sql_portfolio.git
+## 💡 Skills Demonstrated
+- **Data Modeling & Warehousing:** Star Schema Design, Staging/Intermediate/Analytics Layers, dbt Modular Models
+- **SQL & Analytics:** Data Cleaning, Deduplication, Window Functions, Joins, Scenario & Margin Analysis
+- **Automation:** Python + PostgreSQL Integration (`psycopg2`), `Makefile` Orchestration, Pipeline Result Logging
